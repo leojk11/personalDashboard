@@ -1,4 +1,4 @@
-import { animate, query, style, transition, trigger } from '@angular/animations';
+import { animate, group, query, style, transition, trigger } from '@angular/animations';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
@@ -9,6 +9,11 @@ import { RouterOutlet } from '@angular/router';
   animations: [
     trigger('routeAnim', [
       transition('* => *', [
+        style({
+          position: 'relative',
+          overflow: 'hidden'
+        }),
+
         query(':enter, :leave', [
           style({
             position: 'absolute',
@@ -24,21 +29,25 @@ import { RouterOutlet } from '@angular/router';
             opacity: 0,
           })
         ], { optional: true }),
-        query(':leave', [
-          animate(1000, style({
-            opacity: 0,
-            height: '100%'
-          }))
-        ], { optional: true }),
 
-        query(':enter', [
-          style({
-            opacity: 0,
-          }),
-          animate(1000, style({
-            opacity: 1,
-          }))
-        ], { optional: true })
+        group([
+          query(':leave', [
+            animate(800, style({
+              opacity: 0,
+              height: '100%'
+            }))
+          ], { optional: true }),
+  
+          query(':enter', [
+            style({
+              transform: 'translateX(80px)'
+            }),
+            animate(800, style({
+              opacity: 1,
+              transform: 'translateX(0)'
+            }))
+          ], { optional: true })
+        ])
       ])
     ])
   ]

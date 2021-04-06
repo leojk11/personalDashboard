@@ -15,6 +15,8 @@
 .tab {
     position: relative;
 
+    text-decoration: none;
+
     z-index: 1;
 }
 
@@ -28,7 +30,18 @@
     i {
         color: #222;
     }
+
+    transition: all 0.5s ease-out;
 }
+.tab.selected .tab-tile {
+    // transform: translateY(-30px);
+    transform: translateY(-50%);
+
+    transition-duration: 0.4s;
+    transition-timing-function: cubic-bezier(0.175, 0.885, 0.32, 2);
+}
+
+// tap tile backgorund shape styles
 .tab-tile::before {
     content: '';
     position: absolute;
@@ -45,7 +58,6 @@
 
     transition: all 0.2s;
 }
-
 .bookmarks-tab .tab-tile::before {
     background: linear-gradient(45deg, #f8b5a5, #e2d2fd);
 }
@@ -55,8 +67,48 @@
 .notes-tab .tab-tile::before {
     background: linear-gradient(45deg, #d2cdff, #5fffbc);
 }
-
 .tab-tile:hover::before {
     opacity: 1;
     transform: scale(1.1);
 }
+.tab.selected .tab-tile::before {
+    opacity: 1;
+    transform: scale(1.1);
+    border-radius: 50%;
+
+    box-shadow: 0px 7px 17px rgba(black, 0.28);
+}
+// end of tap tile backgorund shape styles
+
+// styles for the underline effect
+.tab::after {
+    content: '';
+
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    right: 0;
+
+    height: 3px;
+    width: 50%;
+
+    margin: auto;
+
+    background-color: rgba(white, 0.85);
+
+    border-radius: 2px;
+
+    transition: all 0.3s;
+
+    // hide by default
+    opacity: 0;
+    transform: scaleX(0);
+}
+.tab.selected::after {
+    opacity: 1;
+    transform: scaleX(1);
+    transition-delay: 0.4s;
+}
+.tab.selected { outline: none }
+
+

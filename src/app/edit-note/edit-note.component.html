@@ -1,11 +1,17 @@
-<div class="add-note-wrapper container has-blurred-white-bg">
-    <h2 class='is-bold'>New note</h2>
+<div class="edit-note-wrapper container has-blurred-white-bg">
+    <h2 class='is-bold'>Edit note</h2>
 
-    <form #form='ngForm' (ngSubmit)='onFormSubmit(form)'>
+    <p *ngIf='!note'>Note not found!</p>
+
+    <form 
+        #form='ngForm' 
+        (ngSubmit)='onFormSubmit(form)'
+        *ngIf='note'
+    >
         <div class="form-field">
             <input 
                 class='text-box' 
-                ngModel 
+                [ngModel]='note.title' 
                 #titleField='ngModel' 
                 name='title' 
                 type="text" 
@@ -13,7 +19,7 @@
                 required 
                 minlength="3"
             >
-            <ng-container *ngIf='showValidationErrors && titleField.invalid'>
+            <ng-container *ngIf='titleField.invalid'>
                 <p *ngIf='titleField.errors!.required'>Please enter a note title</p>
                 <p *ngIf='titleField.errors!.minlength'>Title must be longer then 3 characters</p>
             </ng-container>
@@ -22,7 +28,7 @@
         <div class="form-field">
             <textarea 
                 class='textarea' 
-                ngModel 
+                [ngModel]='note.content' 
                 name='content' 
                 placeholder="Enter note content..." 
                 required
@@ -31,8 +37,9 @@
 
         <div class="buttons-container">
             <a routerLink='../' class='btn'>Cancel</a>
+            <button type='button' class='btn' (click)='deleteNote()'>Delete</button>
 
-            <button class='btn align-end'>Create note</button>    
+            <button class='btn align-end'>Save note</button>    
         </div>
     </form>
 </div>

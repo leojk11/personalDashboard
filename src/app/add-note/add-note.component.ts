@@ -19,6 +19,8 @@ import { NoteService } from '../shared/note.service';
 })
 export class AddNoteComponent implements OnInit {
 
+  showValidationErrors!: boolean;
+
   constructor(
     private noteService: NoteService,
     private router: Router
@@ -33,7 +35,11 @@ export class AddNoteComponent implements OnInit {
     const note = new Note(form.value.title, form.value.content);
 
     // if there are blank inputs in the form the form wont get submitted
-    if(form.invalid) return;
+    if(form.invalid) {
+      this.showValidationErrors = true;
+
+      return;
+    };
 
     // add the new create note to the note service array
     this.noteService.addNote(note);

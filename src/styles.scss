@@ -73,12 +73,14 @@ h2 {
     background: rgba(white, 0.95);
     backdrop-filter: blur(20px);
 }
-h1.is-bold, h2.is-bold {
+h1.is-bold, 
+h2.is-bold {
     font-weight: bold;
     letter-spacing: -2px;
 }
 
-.text-box, .textarea {
+.text-box, 
+.textarea {
     display: block;
 
     font-size: 18px;

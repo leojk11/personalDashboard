@@ -8,7 +8,10 @@ import { Todo } from './todo.model';
 })
 export class TodoService {
 
-  todos: Todo[] = []
+  todos: Todo[] = [
+    new Todo('this is test todo'),
+    new Todo('this is test no2')
+  ]
  
   constructor() { }
 
@@ -19,7 +22,7 @@ export class TodoService {
 
   // get single todo where the passed ID matches
   getTodo(id: string) {
-    this.todos.find(t => t.id === id);
+    return this.todos.find(t => t.id === id);
   }
 
   // add new todo
@@ -31,7 +34,7 @@ export class TodoService {
   updateTodo(id: string, updatedTodoFields: Partial<Todo>) {
     // get the todo that matches the passed ID
     const todo = this.getTodo(id);
-
+    
     // assing the changes
     Object.assign(todo, updatedTodoFields);
   }

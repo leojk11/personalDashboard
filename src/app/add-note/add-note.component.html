@@ -1,10 +1,10 @@
 <div class="add-note-wrapper container has-blurred-white-bg">
     <h2 class='is-bold'>New note</h2>
 
-    <form>
-        <input class='text-box' type="text" placeholder="Enter not title...">
+    <form #form='ngForm' (ngSubmit)='onFormSubmit(form)'>
+        <input class='text-box' ngModel name='title' type="text" placeholder="Enter not title...">
 
-        <textarea class='textarea' placeholder="Enter note content..."></textarea>
+        <textarea class='textarea' ngModel name='content' placeholder="Enter note content..."></textarea>
 
         <div class="buttons-container">
             <a routerLink='../' class='btn'>Cancel</a>

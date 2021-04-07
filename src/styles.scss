@@ -6,6 +6,7 @@
 
 html {
     font-family: 'Inter', 'sans-serif';
+    color: #222;
 }
 
 html, body {
@@ -17,9 +18,98 @@ h1 {
 }
 h2 {
     font-size: 40px;
+    margin-bottom: 25px;
 }
 
 .container {
     max-width: 850px;
     margin: auto;
+}
+
+// BTNS STLYES
+.btn {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 12px 22px;
+
+    color: white;
+    background: rgba(black, 0.7);
+
+    font-size: 18px;
+    font-weight: 600;
+    font-family: inherit;
+    text-decoration: none;
+
+    border: none;
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    &:hover {
+        background: rgba(black, 0.78);
+        backdrop-filter: blur(2px);
+    }
+    &:active {
+        background: rgba(black, 0.85);
+    }
+}
+.buttons-container {
+    display: flex;
+
+    margin-top: 20px;
+
+    &.btns-centered {
+        justify-content: center;
+    }
+
+    .align-end {
+        margin-left: auto;
+    }
+}
+
+
+.has-blurred-white-bg {
+    background: rgba(white, 0.95);
+    backdrop-filter: blur(20px);
+}
+h1.is-bold, h2.is-bold {
+    font-weight: bold;
+    letter-spacing: -2px;
+}
+
+.text-box, .textarea {
+    display: block;
+
+    font-size: 18px;
+    font-family: inherit;
+
+    padding: 8px 10px;
+    margin-bottom: 20px;
+
+    width: 100%;
+
+    background-color: rgba(white, 0.9);
+
+    border: 2px solid rgba(black, 0.3);
+    border-radius: 4px;
+
+    &:hover {
+        background: rgba(white, 0.95);
+    }
+
+    &:focus {
+        background: white;
+        outline: none;
+    }
+
+    &:hover, 
+    &:focus {
+        border-color: rgba(black, 0.42);
+    }
+}
+.textarea {
+    resize: vertical;
+
+    min-height: 100px;
 }

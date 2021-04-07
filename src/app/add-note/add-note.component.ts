@@ -32,6 +32,9 @@ export class AddNoteComponent implements OnInit {
     // create new note of type Note
     const note = new Note(form.value.title, form.value.content);
 
+    // if there are blank inputs in the form the form wont get submitted
+    if(form.invalid) return;
+
     // add the new create note to the note service array
     this.noteService.addNote(note);
 

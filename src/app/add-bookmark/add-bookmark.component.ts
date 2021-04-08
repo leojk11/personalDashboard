@@ -40,7 +40,7 @@ export class AddBookmarkComponent implements OnInit {
 
 
     // navigate to /bookmarks when bookmark is created
-    // this.router.navigateByUrl('/bookmarks');
+    this.router.navigateByUrl('/bookmarks');
   }
 
 }

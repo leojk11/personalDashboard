@@ -53,13 +53,16 @@ export class EditBookmarkComponent implements OnInit {
     this.notificationService.show('Bookmark has been updated', 3000);
 
     // navigate to /bookmarks
-    // this.router.navigateByUrl('/bookmarks');
+    this.router.navigateByUrl('/bookmarks');
   }
 
   // delete bookmark function
   deleteBookmark() {
     // delete the bookmark that matches the passed ID
     this.bookmarkService.deleteBookmark(this.bookmark.id);
+
+    // show notification when bookmark is deleted
+    this.notificationService.show('Notification has been deleted', 3000);
 
     // navigate to /bookmarks
     this.router.navigateByUrl('/bookmarks');

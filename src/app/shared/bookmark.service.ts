@@ -19,6 +19,7 @@ export class BookmarkService {
 
   // get all bookmarks
   getBookmarks() {
+    console.log(this.bookmarks)
     return this.bookmarks;
   }
 

@@ -10,6 +10,9 @@ import { Todo } from '../shared/todo.model';
 // todo service
 import { TodoService } from '../shared/todo.service';
 
+// notification service
+import { NotificationService } from '../shared/notification.service';
+
 @Component({
   selector: 'app-todos',
   templateUrl: './todos.component.html',
@@ -32,7 +35,8 @@ export class TodosComponent implements OnInit {
 
   constructor(
     private todoService: TodoService,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -52,8 +56,10 @@ export class TodosComponent implements OnInit {
   }
 
   onDeleteClick(todo: Todo) {
-    // alert('delete clicked');
     this.todoService.deleteTodo(todo.id);
+
+    // show notification when todo is deleted
+    this.notificationService.show('Todo has been deleted', 3000);
   }
 
 }

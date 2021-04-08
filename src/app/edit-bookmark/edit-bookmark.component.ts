@@ -33,13 +33,26 @@ export class EditBookmarkComponent implements OnInit {
     })
   }
 
+  // on form submit edit the chosen bookmark
   onFormSubmit(form: NgForm) {
+    // get the name and url from form
     const { name, url } = form.value;
 
+    // edit the bookmark that matches the passed ID
     this.bookmarkService.updateBookmark(this.bookmark.id, {
       name, url: new URL(url)
     });
 
+    // navigate to /bookmarks
+    this.router.navigateByUrl('/bookmarks');
+  }
+
+  // delete bookmark function
+  deleteBookmark() {
+    // delete the bookmark that matches the passed ID
+    this.bookmarkService.deleteBookmark(this.bookmark.id);
+
+    // navigate to /bookmarks
     this.router.navigateByUrl('/bookmarks');
   }
 

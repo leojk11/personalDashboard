@@ -9,7 +9,11 @@ import { Bookmark } from './boomark.model';
 export class BookmarkService {
 
   // all bookmarks
-  bookmarks: Bookmark[] = [];
+  bookmarks: Bookmark[] = [
+    new Bookmark('Test', 'http://wikipedia.org'),
+    new Bookmark('Facebook', 'http://facebook.com'),
+    new Bookmark('Instagram', 'http://instagram.com')
+  ];
 
   constructor() { }
 

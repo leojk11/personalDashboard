@@ -1,13 +1,17 @@
 <div class="edit-todo-wrapper container has-blurred-white-bg">
     <h2 class='is-bold'>Edit todo</h2>
 
+    <p *ngIf='!todo'>No todo found</p>
+
     <form 
         #form='ngForm' 
+        (ngSubmit)='onFormSubmit(form)'
+        *ngIf='todo'
     >
         <div class="form-field">
             <input 
                 class='text-box' 
-                ngModel 
+                [ngModel]='todo.text' 
                 #textField='ngModel' 
                 name='text' 
                 type="text" 
@@ -15,10 +19,10 @@
                 required 
                 minlength="3"
             >
-            <!-- <ng-container *ngIf='showValidationErrors && textField.invalid'>
+            <ng-container *ngIf='showValidationErrors && textField.invalid'>
                 <p *ngIf='textField.errors!.required'>Please enter some text for this todo</p>
                 <p *ngIf='textField.errors!.minlength'>Todo text must be longer then 3 characters</p>
-            </ng-container> -->
+            </ng-container>
         </div>
 
         <div class="buttons-container">

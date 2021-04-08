@@ -4,6 +4,9 @@ import { NgForm } from '@angular/forms';
 // angular router
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
+// notification service
+import { NotificationService } from '../shared/notification.service';
+
 // todo model
 import { Todo } from '../shared/todo.model';
 
@@ -24,7 +27,8 @@ export class EditTodoComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private todoService: TodoService,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -45,6 +49,9 @@ export class EditTodoComponent implements OnInit {
 
     // sending only todo.value bacause there is only one field in the form
     this.todoService.updateTodo(this.todo.id, form.value);
+
+    // set the notification when new todo has been added
+    this.notificationService.show('Todo has been added');
 
     // when the todo is updated go to /todos URL
     this.router.navigateByUrl('/todos');

@@ -29,7 +29,7 @@ import { NotificationService } from '../shared/notification.service';
 })
 export class NotificationComponent implements OnInit {
 
-  notification!: NotificationData | null;
+  notification!: NotificationData[] | null;
 
   timeout: any;
 
@@ -37,16 +37,17 @@ export class NotificationComponent implements OnInit {
 
   ngOnInit(): void {
     this.notificationService.notifications.subscribe((notification: NotificationData) => {
-      // set the notification text to be the passed text
-      this.notification = notification;
+      // set the notification to the passed one
+      this.notification = Array(notification);
 
       // clear timeout, so when you click mutiple times the notification will still go away afte one second
       clearTimeout(this.timeout);
 
       // timeout function, notification goes away after one second
       this.timeout = setTimeout(() => {
+        // set the notification to null, so when there is no notification the notification component will go away
         this.notification = null; 
-      }, this.notification.duration);
+      }, notification.duration);
     })
   }
 

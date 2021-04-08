@@ -29,10 +29,6 @@
     }
 }
 
-.bookmark-tile img {
-    max-width: 32px;
-}
-
 .tile-text {
     color: rgba(white, 0.85);
     font-size: 14px;
@@ -42,4 +38,11 @@
     white-space: nowrap;
 
     text-overflow: ellipsis;
+}
+.tile-img {
+    height: 32px;
+    width: 32px;
+}
+.tile-img img {
+    width: 100%;
 }

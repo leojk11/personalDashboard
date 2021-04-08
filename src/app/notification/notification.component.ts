@@ -16,7 +16,7 @@ import { NotificationService } from '../shared/notification.service';
           opacity: 0,
           transform: 'translateY(5px)'
         }),
-        animate('150ms ease-out')
+        animate('150ms 125ms ease-out')
       ]),
       transition(':leave', [
         animate(125, style({

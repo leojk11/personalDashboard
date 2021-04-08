@@ -12,6 +12,9 @@ import { Note } from '../shared/note.model';
 // ng form
 import { NgForm } from '@angular/forms';
 
+// notification service
+import { NotificationService } from '../shared/notification.service';
+
 @Component({
   selector: 'app-edit-note',
   templateUrl: './edit-note.component.html',
@@ -24,7 +27,8 @@ export class EditNoteComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private noteService: NoteService,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -43,6 +47,9 @@ export class EditNoteComponent implements OnInit {
     // when form is submitted, update the note that matches the passed ID
     this.noteService.updateNote(this.note.id, form.value);
 
+    // show notification when note has been updated
+    this.notificationService.show('Note has been updated', 3000);
+
     // when form is submitted, reroute to /notes
     this.router.navigateByUrl('/notes');
   }
@@ -51,6 +58,9 @@ export class EditNoteComponent implements OnInit {
   deleteNote() {
     // delete the note that maches the passed ID
     this.noteService.deleteNote(this.note.id);
+
+    // show notification when note has been deleted
+    this.notificationService.show('Note has been deleted', 3000);
 
     // when note is deleted, reroute to /notes
     this.router.navigateByUrl('/notes');

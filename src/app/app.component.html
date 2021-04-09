@@ -1,7 +1,13 @@
 <div class="app-wrapper">
-    <img [src]="bg" class="bg-image" (load)='onBgImageLoad()'>
+    <img 
+        [src]="bg"
+        *ngFor='let bg of backgrounds.reverse()' 
+        class="bg-image" 
+        (load)='onBgImageLoad($event)'
+        @bgAnim
+    >
 
-    <div class="btn change-bg-btn" (click)='changeBgImage()' *ngIf='!loadingBgImage'>
+    <div @fadeAnim class="btn change-bg-btn" (click)='changeBgImage()' *ngIf='!loadingBgImage'>
         <i class="material-icons">refresh</i>
     </div>
 

@@ -85,12 +85,33 @@ import { RouterOutlet } from '@angular/router';
           ], { optional: true })
         ])
       ])
+    ]),
+    trigger('bgAnim', [
+      transition(':leave', [
+        animate(1000, style({
+          opacity: 0
+        }))
+      ])
+    ]),
+    trigger('fadeAnim', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate(250, style({
+          opacity: 1
+        }))
+      ]),
+      transition(':leave', [
+        style({ opacity: 1 }),
+        animate(250, style({
+          opacity: 0
+        }))
+      ])
     ])
   ]
 })
 export class AppComponent {
 
-  bg: string = "https://images.unsplash.com/photo-1617555378116-5608115f9943?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=1080&ixlib=rb-1.2.1&q=80&w=1920";
+  backgrounds: string[] = ["https://images.unsplash.com/photo-1617555378116-5608115f9943?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=1080&ixlib=rb-1.2.1&q=80&w=1920"]
 
   loadingBgImage!: boolean;
 
@@ -103,16 +124,38 @@ export class AppComponent {
   }
 
   async changeBgImage() {
+    // set to true, to prevent the user from clicking the reload buttom before the next image is loaded
     this.loadingBgImage = true;
 
+    // get random image url from API
     const result = await fetch('https://source.unsplash.com/random/1920x1080', {
       method: 'HEAD'
     })
 
-    this.bg = result.url;
+    // check if we already got the image, if it is duplicate get another image
+    const alreadyGot = this.backgrounds.includes(result.url);
+    if(alreadyGot) {
+      return this.reloadImage()
+    }
+
+    // push the new background in the array of backgrounds
+    this.backgrounds.push(result.url);
+  }
+  reloadImage() {
+    this.changeBgImage();
   }
 
-  onBgImageLoad() {
+  // show back the reload butoon
+  onBgImageLoad(imgEvent: Event) {
+    // when new image get loaded remove the oldest one 
+    const imgElement = imgEvent.target as HTMLImageElement;
+
+    // get the url from image
+    const src = imgElement.src;
+
+    // keep only the new loaded image in the array
+    this.backgrounds = this.backgrounds.filter(b => b === src)
+
     this.loadingBgImage = false;
   }
 

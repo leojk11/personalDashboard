@@ -1,6 +1,17 @@
 import { animate, group, query, style, transition, trigger } from '@angular/animations';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { timer } from 'rxjs';
+
+// used constant so code do not get repeated
+const baseStyles = style({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100%',
+  display: 'block'
+});
 
 @Component({
   selector: 'app-root',
@@ -16,14 +27,7 @@ import { RouterOutlet } from '@angular/router';
         }),
 
         query(':enter, :leave', [
-          style({
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            display: 'block'
-          })
+          baseStyles
         ], { optional: true }),
 
         group([
@@ -55,14 +59,7 @@ import { RouterOutlet } from '@angular/router';
         }),
 
         query(':enter, :leave', [
-          style({
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            display: 'block'
-          })
+          baseStyles
         ], { optional: true }),
 
         group([
@@ -84,8 +81,71 @@ import { RouterOutlet } from '@angular/router';
             }))
           ], { optional: true })
         ])
+      ]),
+
+      // SECONDARY ROUTES ANIMATIONS
+      transition('* => secondary', [
+        style({
+          position: 'relative',
+        }),
+
+        query(':enter, :leave', [
+          baseStyles
+        ], { optional: true }),
+
+        group([
+          query(':leave', [
+            animate('250ms ease-in', style({
+              opacity: 0,
+              transform: 'scale(0.8)'
+            }))
+          ], { optional: true }),
+  
+          query(':enter', [
+            style({
+              transform: 'scale(1.2)',
+              opacity: 0
+            }),
+            animate('250ms 120ms ease-out', style({
+              opacity: 1,
+              transform: 'scale(1)'
+            }))
+          ], { optional: true })
+        ])
+      ]),
+      // animations when secondary routes leave
+      transition('secondary => *', [
+        style({
+          position: 'relative',
+        }),
+
+        query(':enter, :leave', [
+          baseStyles
+        ], { optional: true }),
+
+        group([
+          query(':leave', [
+            animate('250ms ease-in', style({
+              opacity: 0,
+              transform: 'scale(1.25)'
+            }))
+          ], { optional: true }),
+  
+          query(':enter', [
+            style({
+              transform: 'scale(0.8)',
+              opacity: 0
+            }),
+            animate('250ms 120ms ease-out', style({
+              opacity: 1,
+              transform: 'scale(1)'
+            }))
+          ], { optional: true })
+        ])
       ])
     ]),
+
+    // BACKGROUND IMAGE ANIMATIONS
     trigger('bgAnim', [
       transition(':leave', [
         animate(1000, style({
@@ -109,15 +169,29 @@ import { RouterOutlet } from '@angular/router';
     ])
   ]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   backgrounds: string[] = ["https://images.unsplash.com/photo-1617555378116-5608115f9943?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=1080&ixlib=rb-1.2.1&q=80&w=1920"]
 
   loadingBgImage!: boolean;
 
+  dateTime!: Date
+
+  ngOnInit() {
+    // update dateTime eveytime the clock changes
+    timer(0, 1000).subscribe(() => {
+      this.dateTime = new Date();
+    })
+  }
+
   prepareRoute(outlet: RouterOutlet) {
     if (outlet.isActivated) {
-      return outlet.activatedRouteData['tab']
+      // tab is used to animate routes
+      const tab = outlet.activatedRouteData['tab'];
+
+      // if tab doesent have value then it means that we are on a secondary route
+      if(!tab) return 'secondary'
+      return tab;
     } else {
       return 
     }

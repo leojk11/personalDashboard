@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+
+// note model
 import { Note } from './note.model';
 
 @Injectable({
@@ -6,12 +8,11 @@ import { Note } from './note.model';
 })
 export class NoteService {
 
-  notes: Note[] = [
-    new Note('Test itle', 'Test content'),
-    new Note('Hey!', 'testing new note')
-  ]
+  notes: Note[] = [];
 
-  constructor() { }
+  constructor() { 
+    this.loadState();
+  }
 
   // get all notes 
   getNotes() {
@@ -26,12 +27,18 @@ export class NoteService {
   // add new note of type Note
   addNote(note: Note) {
     this.notes.push(note);
+
+    // update the existing localStorage state with the new one
+    this.saveState();
   }
 
   // update note, but do not update the whole object, only the changed parts of it
   updateNote(id: string, updatedFileds: Partial<Note>) {
     const note = this.getNote(id)
-    Object.assign(note, updatedFileds)
+    Object.assign(note, updatedFileds);
+
+    // update the existing localStorage state with the new one
+    this.saveState();
   }
 
   // delete note that matches the passed id
@@ -43,7 +50,41 @@ export class NoteService {
     if(noteIndex === -1) {
       return;
     } else {
+      // splice the existing array
+      // delete the note that has matching ID as the passed one
       this.notes.splice(noteIndex, 1);
+
+      // update the existing localStorage state with the new one
+      this.saveState();
+    }
+  }
+
+  // save to localStorage
+  saveState() {
+    // notes array converted into JSON string
+    localStorage.setItem('notes', JSON.stringify(this.notes));
+  }
+  // get the saved state from localStorage
+  loadState() {
+    // tryCatch is added to prevent invalid JSON data from braking the app
+    // when invalid JSON data is entered then error is being console logged
+    // before that it was rerouting the app to /
+    try {
+      const lsNotes = JSON.parse(localStorage.getItem('notes')!);
+
+      // if there is no notes item in localStorage then just return
+      // othervise error is showing that cannot read property push of null
+      // when new note is created
+      if(!lsNotes) return;
+
+      // clear the notes array
+      this.notes.length = 0;
+      // modify the items in the notes array so they can be the same as the localStorage ones
+      this.notes.push(...lsNotes);
+
+    } catch (error) {
+      console.log('There was an error getting the notes from localStorage');
+      console.log(error);
     }
   }
 }

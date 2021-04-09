@@ -9,17 +9,15 @@ import { Bookmark } from './boomark.model';
 export class BookmarkService {
 
   // all bookmarks
-  bookmarks: Bookmark[] = [
-    new Bookmark('Test', 'http://wikipedia.org'),
-    new Bookmark('Facebook', 'http://facebook.com'),
-    new Bookmark('Instagram', 'http://instagram.com')
-  ];
+  bookmarks: Bookmark[] = [];
 
-  constructor() { }
+  constructor() { 
+    this.loadState();
+  }
 
   // get all bookmarks
   getBookmarks() {
-    console.log(this.bookmarks)
+    // console.log(this.bookmarks)
     return this.bookmarks;
   }
 
@@ -31,6 +29,8 @@ export class BookmarkService {
   // add new bookmark
   addBookmarks(bookmark: Bookmark) {
     this.bookmarks.push(bookmark);
+
+    this.saveState();
   }
 
   // update bookmark that matches the passed ID
@@ -40,6 +40,8 @@ export class BookmarkService {
 
     // assign changes to the chosen bookmark
     Object.assign(bookmark, updatedFields);
+
+    this.saveState();
   }
 
   // delete bookmark that matches the passed ID
@@ -52,5 +54,41 @@ export class BookmarkService {
 
     // delete the bookmark from the array that matches the index
     this.bookmarks.splice(bookmarkIndex, 1);
+
+    this.saveState();
+  }
+
+  // save to localStorage
+  saveState() {
+    // bookmarks array converted into JSON string
+    localStorage.setItem('bookmarks', JSON.stringify(this.bookmarks));
+  }
+
+  loadState() {
+    // tryCatch is added to prevent invalid JSON data from braking the app
+    // when invalid JSON data is entered then error is being console logged
+    // before that it was rerouting the app to /
+    try {
+      const lsBookmarks = JSON.parse(localStorage.getItem('bookmarks')!, (key, value) => {
+        // converting the URL string from the JSON to URL objects so we can access the origin, to get favicon
+        if(key === 'url') return new URL(value)
+
+        return value
+      });
+
+      // if there is no bookmarks item in localStorage then just return
+      // othervise error is showing that cannot read property push of null
+      // when new bookmark is created
+      if(!lsBookmarks) return;
+
+      // clear the bookmarks array
+      this.bookmarks.length = 0;
+      // modify the items in the bookmarks array so they can be the same as the localStorage ones
+      this.bookmarks.push(...lsBookmarks);
+
+    } catch (error) {
+      console.log('There was an error getting the bookmarks from localStorage');
+      console.log(error);
+    }
   }
 }

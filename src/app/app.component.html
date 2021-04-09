@@ -1,4 +1,10 @@
 <div class="app-wrapper">
+    <img [src]="bg" class="bg-image" (load)='onBgImageLoad()'>
+
+    <div class="btn change-bg-btn" (click)='changeBgImage()' *ngIf='!loadingBgImage'>
+        <i class="material-icons">refresh</i>
+    </div>
+
     <div class="top-section">
         <h1>19:00</h1>
     

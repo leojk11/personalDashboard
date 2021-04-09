@@ -25,11 +25,6 @@ import { RouterOutlet } from '@angular/router';
             display: 'block'
           })
         ], { optional: true }),
-        // query(':enter', [
-        //   style({
-        //     opacity: 0,
-        //   })
-        // ], { optional: true }),
 
         group([
           query(':leave', [
@@ -69,11 +64,6 @@ import { RouterOutlet } from '@angular/router';
             display: 'block'
           })
         ], { optional: true }),
-        // query(':enter', [
-        //   style({
-        //     opacity: 0,
-        //   })
-        // ], { optional: true }),
 
         group([
           query(':leave', [
@@ -100,12 +90,30 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
 
+  bg: string = "https://images.unsplash.com/photo-1617555378116-5608115f9943?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=1080&ixlib=rb-1.2.1&q=80&w=1920";
+
+  loadingBgImage!: boolean;
+
   prepareRoute(outlet: RouterOutlet) {
     if (outlet.isActivated) {
       return outlet.activatedRouteData['tab']
     } else {
       return 
     }
+  }
+
+  async changeBgImage() {
+    this.loadingBgImage = true;
+
+    const result = await fetch('https://source.unsplash.com/random/1920x1080', {
+      method: 'HEAD'
+    })
+
+    this.bg = result.url;
+  }
+
+  onBgImageLoad() {
+    this.loadingBgImage = false;
   }
 
 }

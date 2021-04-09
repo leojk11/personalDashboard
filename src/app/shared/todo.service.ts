@@ -8,12 +8,11 @@ import { Todo } from './todo.model';
 })
 export class TodoService {
 
-  todos: Todo[] = [
-    new Todo('this is test todo'),
-    new Todo('this is test no2')
-  ]
+  todos: Todo[] = [];
  
-  constructor() { }
+  constructor() {
+    this.loadState();
+  }
 
   // get all todos
   getTodos() {
@@ -27,7 +26,10 @@ export class TodoService {
 
   // add new todo
   addTodo(todo: Todo) {
-    this.todos.push(todo)
+    this.todos.push(todo);
+    
+    // update the existing localStorage state with the new one
+    this.saveState();
   }
 
   // update todo where the ID matches
@@ -37,6 +39,9 @@ export class TodoService {
     
     // assing the changes
     Object.assign(todo, updatedTodoFields);
+
+    // update the existing localStorage state with the new one
+    this.saveState();
   }
 
   // delete todo where the ID matches the passed ID
@@ -50,5 +55,37 @@ export class TodoService {
 
     // splice the todo that maches the index
     this.todos.splice(index, 1);
+
+    // update the existing localStorage state with the new one
+    this.saveState();
+  }
+
+  // save to localStorage
+  saveState() {
+    // notes array converted into JSON string
+    localStorage.setItem('todos', JSON.stringify(this.todos));
+  }
+  // get the saved state from localStorage
+  loadState() {
+    // tryCatch is added to prevent invalid JSON data from braking the app
+    // when invalid JSON data is entered then error is being console logged
+    // before that it was rerouting the app to /
+    try {
+      const lsTodos = JSON.parse(localStorage.getItem('todos')!);
+
+      // if there is no notes item in localStorage then just return
+      // othervise error is showing that cannot read property push of null
+      // when new note is created
+      if(!lsTodos) return;
+
+      // clear the notes array
+      this.todos.length = 0;
+      // modify the items in the notes array so they can be the same as the localStorage ones
+      this.todos.push(...lsTodos);
+
+    } catch (error) {
+      console.log('There was an error getting the todos from localStorage');
+      console.log(error);
+    }
   }
 }
